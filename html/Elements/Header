@@ -2,7 +2,7 @@
 %#
 %# COPYRIGHT:
 %#
-%# This software is Copyright (c) 1996-2017 Best Practical Solutions, LLC
+%# This software is Copyright (c) 1996-2024 Best Practical Solutions, LLC
 %#                                          <sales@bestpractical.com>
 %#
 %# (Except where explicitly superseded by other copyright notices)
@@ -96,8 +96,15 @@
 
 <& /Elements/Framekiller &>
 
+% $m->callback( CallbackName => 'EndOfHead', ARGSRef => \%ARGS );
+
 </head>
-  <body class="<% join( ' ',@{$ARGS{'BodyClass'}}) %>" <% $id && qq[id="comp-$id"] |n %>>
+  <body class="<% join( ' ',@{$ARGS{'BodyClass'}}, GetStylesheet() =~ /-dark$/ ? 'darkmode' : ()) %>" <% $id && qq[id="comp-$id"] |n %>>
+    <div class="main-container">
+% # The close div for this is in PageLayout right before the rt body div
+% if ( $ShowBar || $ShowTitle ) {
+<div id='rt-header-container'>
+% }
 
 % if ($ShowBar) {
 <& /Elements/Logo, %ARGS &>
@@ -110,9 +117,11 @@
 <div id="header"><h1><% $Title %></h1></div>
 % }
 
+% # This is the only part added for BecomeUser
 % $m->callback(
 %    CallbackName => 'BackToOriginalAccount',
 % );
+% # End addition for BecomeUser
 
 
 <%INIT>
@@ -122,8 +131,7 @@ $lang = $session{'CurrentUser'}->LanguageHandle->language_tag
      && $session{'CurrentUser'}->LanguageHandle
      && $session{'CurrentUser'}->LanguageHandle->language_tag;
 
-$r->headers_out->{'Pragma'} = 'no-cache';
-$r->headers_out->{'Cache-control'} = 'no-cache';
+$m->comp('/Elements/HttpResponseHeaders');
 
 my $id = $m->request_comp->path;
 $id =~ s|^/||g;
@@ -133,10 +141,7 @@ $id =~ s|index$||g
     if $id ne 'index';
 $id =~ s|-$||g;
 
-my $style = $session{'CurrentUser'}
-          ? $session{'CurrentUser'}->Stylesheet
-          : RT->Config->Get('WebDefaultStylesheet');
-
+my $style = GetStylesheet();
 my @css_files;
 if ( RT->Config->Get('DevelMode') ) {
     @css_files = map { "/static/css/$_" } "$style/main.css", RT->Config->Get('CSSFiles');
@@ -146,6 +151,7 @@ else {
       RT::Interface::Web::SquishedCSS( $style )->Key;
     @css_files = "/NoAuth/css/$style/squished-$key.css";
 }
+$m->callback( CallbackName => "MassageCSSFiles", CSSFiles => \@css_files, ARGSRef => \%ARGS );
 
 # We use BodyClass in its $ARGS form so that callbacks have a chance to
 # massage it

@@ -41,6 +41,28 @@ Make sure the module gets loaded by including
 
 into your etc/RT_SiteConfig.pm or a file in etc/RT_SiteConfig.d/
 
+## Changes for RT 5
+
+Updated the overridden Elements/Header to match the rt5 version.
+Need to find another place to put that BackToOriginalAccount callback
+where we don't have to do an override.
+
+Removed the override to CollectionList, and its AddColumn callback, so the
+"become user" links no longer show up on the Admin/Users list. To enable
+them again, simply add it to the AdminSearchResultFormat option:
+
+    Set(%AdminSearchResultFormat,
+        Users =>
+            q{'<a href="__WebPath__/Admin/Users/Modify.html?id=__id__">__id__</a>/TITLE:#'}
+            .q{,'<a href="__WebPath__/Admin/Users/Modify.html?id=__id__">__Name__</a>/TITLE:Name'}
+            .q{,__RealName__, __EmailAddress__,__SystemGroup__,__Disabled__}
+            .q{,'<a href="__WebPath__/BecomeUser.html?id=__id__">become</a>/TITLE:become user'},
+    );
+
+### Problems
+
+"back to original account" link doesn't work from SelfService (Unprivileged?).
+
 ### Automated Install
 
     perl Makefile.PL
