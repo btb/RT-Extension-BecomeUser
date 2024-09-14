@@ -6,6 +6,8 @@ use warnings;
 
 our $VERSION = '0.02';
 
+RT->AddStyleSheets("becomeuser.css");
+
 RT::System->AddRight( Admin => BecomeUser => 'Become other users');
 
 sub userHasAppropriateRight{

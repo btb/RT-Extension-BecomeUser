@@ -1,0 +1,9 @@
+<%init>
+if ($session{RT_Extension_BecomeUser_OriginalUser}) {
+    Menu()->child('home')->add_before(
+        'becomeuser',
+        title => 'back to original account',
+        path  => RT->Config->Get('WebPath') . '/SelfService/BecomeOriginalUser.html',
+    );
+}
+</%init>

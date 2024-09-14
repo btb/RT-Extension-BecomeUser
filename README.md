@@ -43,9 +43,9 @@ into your etc/RT_SiteConfig.pm or a file in etc/RT_SiteConfig.d/
 
 ## Changes for RT 5
 
-Updated the overridden Elements/Header to match the rt5 version.
-Need to find another place to put that BackToOriginalAccount callback
-where we don't have to do an override.
+Removed the override to the main Header file, and added the "back to original
+account" links to the menu instead. Added a nice red border around it to make
+it noticeable.
 
 Removed the override to CollectionList, and its AddColumn callback, so the
 "become user" links no longer show up on the Admin/Users list. To enable
@@ -58,6 +58,9 @@ them again, simply add it to the AdminSearchResultFormat option:
             .q{,__RealName__, __EmailAddress__,__SystemGroup__,__Disabled__}
             .q{,'<a href="__WebPath__/BecomeUser.html?id=__id__">become</a>/TITLE:become user'},
     );
+
+It should be noted that the old behavior was to only only show the link if you
+actually had the rights needed to use it.
 
 ### Automated Install
 
