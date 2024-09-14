@@ -1,6 +1,6 @@
 Changes    
 html/BecomeUser.html       
-html/BecomeOriginalUser.html                             
+html/SelfService/BecomeOriginalUser.html                             
 html/Callbacks/RT-Extension-BecomeUser/Elements/CollectionList/AddColumns
 html/Callbacks/RT-Extension-BecomeUser/Admin/Users/Modify.html/LeftColumnBottom 
 inc/YAML/Tiny.pm           

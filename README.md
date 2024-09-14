@@ -59,10 +59,6 @@ them again, simply add it to the AdminSearchResultFormat option:
             .q{,'<a href="__WebPath__/BecomeUser.html?id=__id__">become</a>/TITLE:become user'},
     );
 
-### Problems
-
-"back to original account" link doesn't work from SelfService (Unprivileged?).
-
 ### Automated Install
 
     perl Makefile.PL

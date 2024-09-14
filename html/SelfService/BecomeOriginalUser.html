@@ -8,7 +8,7 @@ if (exists $session{RT_Extension_BecomeUser_OriginalUser}){
 </%INIT>
 <h1>you are now back at your original account with id <%$session{CurrentUser}->id %></h1>
 
-<a href="/">home</a>
+<a href="<% RT->Config->Get('WebPath') %>/">home</a>
 
 <%ARGS>
 $id => undef
